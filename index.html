@@ -6,48 +6,175 @@
     <title>Трекер объятий</title>
     <style>
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; margin: 0; padding: 16px; background-color: #f6f8fa; color: #24292f; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
+            margin: 0; 
+            padding: 16px; 
+            background-color: #f6f8fa; 
+            color: #24292f;
+        }
         h1 { font-size: 1.4em; text-align: center; margin: 0 0 16px 0; }
-        .controls { max-width: 100%; margin-bottom: 16px; text-align: right; }
-        .btn-print { background-color: #0969da; color: #ffffff; border: none; padding: 10px 20px; font-size: 0.95em; font-weight: 600; border-radius: 6px; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        .table-wrapper { background: #ffffff; border-radius: 12px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); overflow-x: auto; max-width: 100%; border: 1px solid #d0d7de; }
-        table { border-collapse: collapse; width: max-content; min-width: 100%; }
-        th, td { padding: 12px 8px; text-align: center; border-bottom: 1px solid #d0d7de; border-right: 1px solid #d0d7de; min-width: 44px; }
+        
+        .controls {
+            max-width: 100%;
+            margin-bottom: 16px;
+            text-align: right;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .period-info {
+            font-size: 0.9em;
+            color: #57606a;
+            font-weight: 500;
+        }
+        .btn-print {
+            background-color: #0969da;
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 0.95em;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: background-color 0.2s;
+        }
+        .btn-print:hover { background-color: #0550ae; }
+
+        .table-wrapper {
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            overflow-x: auto;
+            max-width: 100%;
+            border: 1px solid #d0d7de;
+        }
+        table {
+            border-collapse: collapse;
+            width: max-content;
+            min-width: 100%;
+        }
+        th, td {
+            padding: 10px 6px;
+            text-align: center;
+            border-bottom: 1px solid #d0d7de;
+            border-right: 1px solid #d0d7de;
+            min-width: 44px;
+        }
         td { cursor: pointer; }
-        th { background-color: #f0f3f6; font-size: 0.85em; color: #57606a; font-weight: 600; white-space: nowrap; }
-        td.name-col, th.name-col { position: sticky; left: 0; background-color: #ffffff; z-index: 2; text-align: left; font-weight: 500; box-shadow: 2px 0 5px rgba(0,0,0,0.05); border-right: 2px solid #d0d7de; min-width: 130px; }
+        th {
+            background-color: #f0f3f6;
+            font-size: 0.85em;
+            color: #57606a;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        .day-header {
+            font-size: 0.75em;
+            font-weight: normal;
+            color: #57606a;
+            padding-top: 2px;
+            padding-bottom: 8px;
+        }
+        .weekend {
+            color: #cf222e;
+            background-color: #ffebe9;
+        }
+        td.name-col, th.name-col {
+            position: sticky;
+            left: 0;
+            background-color: #ffffff;
+            z-index: 2;
+            text-align: left;
+            font-weight: 500;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.05);
+            border-right: 2px solid #d0d7de;
+            min-width: 130px;
+        }
         th.name-col { background-color: #f0f3f6; z-index: 3; }
-        td.summary-col, th.summary-col { background-color: #f0f9ff; font-weight: bold; color: #0969da; min-width: 70px; }
-        th.summary-col { background-color: #ddf4ff; color: #0969da; }
+        
+        td.summary-col, th.summary-col {
+            background-color: #f0f9ff;
+            font-weight: bold;
+            color: #0969da;
+            min-width: 70px;
+            position: sticky;
+            left: 130px;
+            z-index: 2;
+            border-right: 2px solid #d0d7de;
+        }
+        th.summary-col { background-color: #ddf4ff; color: #0969da; z-index: 3; }
+        
         td:hover:not(.name-col):not(.summary-col) { background-color: #f0f9ff; }
-        input[type="checkbox"] { width: 20px; height: 20px; cursor: pointer; accent-color: #0969da; margin: 0; pointer-events: none; }
-        .stats { margin-top: 16px; text-align: center; font-size: 0.95em; color: #57606a; }
+        
+        input[type="checkbox"] { 
+            width: 20px; 
+            height: 20px; 
+            cursor: pointer; 
+            accent-color: #0969da;
+            margin: 0;
+            pointer-events: none;
+        }
+        .stats {
+            margin-top: 16px;
+            text-align: center;
+            font-size: 0.95em;
+            color: #57606a;
+        }
         .stats-count { font-weight: bold; color: #0969da; }
+
+        /* Скрытая секция для печати отчета */
+        #printSection { display: none; }
+
         @media print {
-            body { background-color: #ffffff; padding: 0; margin: 0; color: #000000; }
-            .controls { display: none; }
-            .table-wrapper { overflow-x: visible; box-shadow: none; border: none; }
-            table { width: 100% !important; table-layout: fixed; border: 1px solid #000000; }
-            th, td { padding: 6px 4px; font-size: 9pt; border-bottom: 1px solid #000000; border-right: 1px solid #000000; }
-            td.name-col, th.name-col { position: static; box-shadow: none; background-color: transparent !important; width: 25% !important; }
-            td.summary-col, th.summary-col { background-color: transparent !important; color: #000000; width: 15% !important; }
-            th:not(.name-col):not(.summary-col), td:not(.name-col):not(.summary-col) { display: none; }
-            .stats { margin-top: 30px; font-size: 12pt; }
+            body { background-color: #ffffff; color: #000000; padding: 0; margin: 0; }
+            .controls, .table-wrapper, .stats, h1 { display: none !important; }
+            #printSection { display: block !important; }
+            
+            .print-header { text-align: center; margin-bottom: 30px; }
+            .print-header h2 { margin: 0 0 10px 0; font-size: 16pt; }
+            .print-header p { margin: 0; color: #555; font-size: 11pt; }
+            
+            .print-list { display: flex; flex-direction: column; gap: 12px; }
+            .print-item { 
+                border-bottom: 1px solid #eee; 
+                padding-bottom: 10px; 
+                page-break-inside: avoid;
+            }
+            .print-item-header { 
+                display: flex; 
+                justify-content: space-between; 
+                align-items: baseline;
+                margin-bottom: 4px;
+            }
+            .print-name { font-weight: bold; font-size: 12pt; }
+            .print-total { font-weight: bold; font-size: 11pt; }
+            .print-dates { font-size: 10pt; color: #444; line-height: 1.4; }
+            .print-dates span { display: inline-block; background: #f0f3f6; padding: 2px 6px; border-radius: 4px; margin: 2px 4px 2px 0; border: 1px solid #d0d7de; }
+            
+            .print-summary { margin-top: 30px; text-align: right; font-size: 14pt; font-weight: bold; border-top: 2px solid #000; padding-top: 10px; }
         }
     </style>
 </head>
 <body>
     <div class="controls">
-        <button class="btn-print" onclick="window.print()">Распечатать итоги</button>
+        <div class="period-info">03.06 — 07.07</div>
+        <button class="btn-print" onclick="prepareAndPrint()">Распечатать отчет</button>
     </div>
+
     <h1>Трекер объятий</h1>
+    
     <div class="table-wrapper">
         <table>
             <thead>
                 <tr>
-                    <th class="name-col">Имя</th>
-                    <th class="summary-col">Итого</th>
+                    <th class="name-col" rowspan="2">Имя</th>
+                    <th class="summary-col" rowspan="2">Итого</th>
                     <th>03.06</th><th>04.06</th><th>05.06</th><th>06.06</th><th>07.06</th><th>08.06</th><th>09.06</th><th>10.06</th><th>11.06</th><th>12.06</th><th>13.06</th><th>14.06</th><th>15.06</th><th>16.06</th><th>17.06</th><th>18.06</th><th>19.06</th><th>20.06</th><th>21.06</th><th>22.06</th><th>23.06</th><th>24.06</th><th>25.06</th><th>26.06</th><th>27.06</th><th>28.06</th><th>29.06</th><th>30.06</th><th>01.07</th><th>02.07</th><th>03.07</th><th>04.07</th><th>05.07</th><th>06.07</th><th>07.07</th>
+                </tr>
+                <tr>
+                    <th class='day-header'>Ср</th><th class='day-header'>Чт</th><th class='day-header'>Пт</th><th class='day-header weekend'>Сб</th><th class='day-header weekend'>Вс</th><th class='day-header'>Пн</th><th class='day-header'>Вт</th><th class='day-header'>Ср</th><th class='day-header'>Чт</th><th class='day-header'>Пт</th><th class='day-header weekend'>Сб</th><th class='day-header weekend'>Вс</th><th class='day-header'>Пн</th><th class='day-header'>Вт</th><th class='day-header'>Ср</th><th class='day-header'>Чт</th><th class='day-header'>Пт</th><th class='day-header weekend'>Сб</th><th class='day-header weekend'>Вс</th><th class='day-header'>Пн</th><th class='day-header'>Вт</th><th class='day-header'>Ср</th><th class='day-header'>Чт</th><th class='day-header'>Пт</th><th class='day-header weekend'>Сб</th><th class='day-header weekend'>Вс</th><th class='day-header'>Пн</th><th class='day-header'>Вт</th><th class='day-header'>Ср</th><th class='day-header'>Чт</th><th class='day-header'>Пт</th><th class='day-header weekend'>Сб</th><th class='day-header weekend'>Вс</th><th class='day-header'>Пн</th><th class='day-header'>Вт</th>
                 </tr>
             </thead>
             <tbody>
@@ -55,12 +182,56 @@
             </tbody>
         </table>
     </div>
+
     <div class="stats">
         Всего объятий за весь период: <span class="stats-count" id="totalHugs">0</span>
     </div>
+
+    <!-- Секция для красивой печати -->
+    <div id="printSection"></div>
+
     <script>
-        const totalPersons = 13;
-        const totalDates = 35;
+        const classmates = ['Авра', 'Астидамия', 'Дорида', 'Крессида', 'Нереида', 'Ойзис', 'Парфенопа', 'Прокрида', 'Стримо', 'Талло', 'Хареа', 'Эгина', 'Энона'];
+        const datesArray = [
+{ date: '03.06', day: 'Ср' },
+{ date: '04.06', day: 'Чт' },
+{ date: '05.06', day: 'Пт' },
+{ date: '06.06', day: 'Сб' },
+{ date: '07.06', day: 'Вс' },
+{ date: '08.06', day: 'Пн' },
+{ date: '09.06', day: 'Вт' },
+{ date: '10.06', day: 'Ср' },
+{ date: '11.06', day: 'Чт' },
+{ date: '12.06', day: 'Пт' },
+{ date: '13.06', day: 'Сб' },
+{ date: '14.06', day: 'Вс' },
+{ date: '15.06', day: 'Пн' },
+{ date: '16.06', day: 'Вт' },
+{ date: '17.06', day: 'Ср' },
+{ date: '18.06', day: 'Чт' },
+{ date: '19.06', day: 'Пт' },
+{ date: '20.06', day: 'Сб' },
+{ date: '21.06', day: 'Вс' },
+{ date: '22.06', day: 'Пн' },
+{ date: '23.06', day: 'Вт' },
+{ date: '24.06', day: 'Ср' },
+{ date: '25.06', day: 'Чт' },
+{ date: '26.06', day: 'Пт' },
+{ date: '27.06', day: 'Сб' },
+{ date: '28.06', day: 'Вс' },
+{ date: '29.06', day: 'Пн' },
+{ date: '30.06', day: 'Вт' },
+{ date: '01.07', day: 'Ср' },
+{ date: '02.07', day: 'Чт' },
+{ date: '03.07', day: 'Пт' },
+{ date: '04.07', day: 'Сб' },
+{ date: '05.07', day: 'Вс' },
+{ date: '06.07', day: 'Пн' },
+{ date: '07.07', day: 'Вт' }
+];
+        
+        const totalPersons = classmates.length;
+        const totalDates = datesArray.length;
 
         function toggleCheck(pIdx, dIdx) {
             const cb = document.getElementById(`cb_${pIdx}_${dIdx}`);
@@ -84,6 +255,54 @@
                 grandTotal += personTotal;
             }
             document.getElementById('totalHugs').textContent = grandTotal;
+        }
+
+        function prepareAndPrint() {
+            const printSection = document.getElementById('printSection');
+            let grandTotal = 0;
+            let html = `
+                <div class="print-header">
+                    <h2>Итоговый отчет: Трекер объятий</h2>
+                    <p>Период проведения: 03 июня 2026 г. — 07 июля 2026 г.</p>
+                </div>
+                <div class="print-list">
+            `;
+
+            for (let p = 0; p < totalPersons; p++) {
+                let personTotal = 0;
+                let datesHugged = [];
+                
+                for (let d = 0; d < totalDates; d++) {
+                    if (localStorage.getItem(`hug_matrix_${p}_${d}`) === 'true') {
+                        datesHugged.push(`<span>${datesArray[d].date} (${datesArray[d].day})</span>`);
+                        personTotal++;
+                    }
+                }
+                
+                grandTotal += personTotal;
+                
+                html += `
+                    <div class="print-item">
+                        <div class="print-item-header">
+                            <div class="print-name">${classmates[p]}</div>
+                            <div class="print-total">Объятий: ${personTotal}</div>
+                        </div>
+                        <div class="print-dates">
+                            ${personTotal > 0 ? 'Даты встреч: ' + datesHugged.join(' ') : '<i>Отметок нет</i>'}
+                        </div>
+                    </div>
+                `;
+            }
+
+            html += `
+                </div>
+                <div class="print-summary">
+                    Всего объятий со всеми: ${grandTotal}
+                </div>
+            `;
+            
+            printSection.innerHTML = html;
+            window.print();
         }
 
         window.onload = calculateStats;
