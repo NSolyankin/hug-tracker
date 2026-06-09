@@ -85,7 +85,7 @@
         <table id="mainTable"></table>
     </div>
 
-    <div class="stats">Всего: <span id="totalHugs">0</span></div>
+    <div class="stats">Всего обнимашек: <span id="totalHugs">0</span></div>
     <div id="printSection"></div>
 
     <script>
@@ -121,45 +121,4 @@
         function toggleCheck(pIdx, dIdx) {
             const cb = document.getElementById(`cb_${pIdx}_${dIdx}`);
             cb.checked = !cb.checked;
-            localStorage.setItem(`h_${pIdx}_${dIdx}`, cb.checked);
-            calculateStats();
-        }
-
-        function calculateStats() {
-            let grandTotal = 0;
-            classmates.forEach((_, pIdx) => {
-                let pTotal = 0;
-                datesArray.forEach((_, dIdx) => {
-                    const checked = localStorage.getItem(`h_${pIdx}_${dIdx}`) === 'true';
-                    document.getElementById(`cb_${pIdx}_${dIdx}`).checked = checked;
-                    if (checked) pTotal++;
-                });
-                document.getElementById(`sum_${pIdx}`).textContent = pTotal;
-                grandTotal += pTotal;
-            });
-            document.getElementById('totalHugs').textContent = grandTotal;
-        }
-
-        function prepareAndPrint() {
-            let html = `<div class="print-header"><h2>Итоговый отчет: Подсчет обнимашек в группе 161</h2></div>`;
-            let grandTotal = 0;
-            classmates.forEach((name, pIdx) => {
-                let pTotal = 0, datesHugged = [];
-                datesArray.forEach((d, dIdx) => {
-                    if (localStorage.getItem(`h_${pIdx}_${dIdx}`) === 'true') {
-                        datesHugged.push(`<span>${d.date} (${d.day})</span>`);
-                        pTotal++;
-                    }
-                });
-                grandTotal += pTotal;
-                html += `<div class="print-item"><div class="print-item-header"><div>${name}</div><div>Объятий: ${pTotal}</div></div><div class="print-dates">${datesHugged.join(' ')}</div></div>`;
-            });
-            document.getElementById('printSection').innerHTML = html + `<div class="print-summary">Всего: ${grandTotal}</div>`;
-            window.print();
-        }
-
-        renderTable();
-        calculateStats();
-    </script>
-</body>
-</html>
+            localStorage.setItem(`h_${pIdx}_${dIdx}`, cb
