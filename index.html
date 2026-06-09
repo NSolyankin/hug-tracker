@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Трекер объятий</title>
+    <title>Подсчет обнимашек в группе 161</title>
     <style>
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body { 
@@ -23,11 +23,7 @@
             justify-content: space-between;
             align-items: center;
         }
-        .period-info {
-            font-size: 0.9em;
-            color: #57606a;
-            font-weight: 500;
-        }
+        .period-info { font-size: 0.9em; color: #57606a; font-weight: 500; }
         .btn-print {
             background-color: #0969da;
             color: #ffffff;
@@ -38,7 +34,6 @@
             border-radius: 6px;
             cursor: pointer;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            transition: background-color 0.2s;
         }
         .btn-print:hover { background-color: #0550ae; }
 
@@ -47,14 +42,9 @@
             border-radius: 12px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
             overflow-x: auto;
-            max-width: 100%;
             border: 1px solid #d0d7de;
         }
-        table {
-            border-collapse: collapse;
-            width: max-content;
-            min-width: 100%;
-        }
+        table { border-collapse: collapse; width: max-content; }
         th, td {
             padding: 10px 6px;
             text-align: center;
@@ -63,97 +53,23 @@
             min-width: 44px;
         }
         td { cursor: pointer; }
-        th {
-            background-color: #f0f3f6;
-            font-size: 0.85em;
-            color: #57606a;
-            font-weight: 600;
-            white-space: nowrap;
-        }
-        .day-header {
-            font-size: 0.75em;
-            font-weight: normal;
-            color: #57606a;
-            padding-top: 2px;
-            padding-bottom: 8px;
-        }
-        .weekend {
-            color: #cf222e;
-            background-color: #ffebe9;
-        }
-        td.name-col, th.name-col {
-            position: sticky;
-            left: 0;
-            background-color: #ffffff;
-            z-index: 2;
-            text-align: left;
-            font-weight: 500;
-            box-shadow: 2px 0 5px rgba(0,0,0,0.05);
-            border-right: 2px solid #d0d7de;
-            min-width: 130px;
-        }
-        th.name-col { background-color: #f0f3f6; z-index: 3; }
+        th { background-color: #f0f3f6; font-size: 0.85em; color: #57606a; font-weight: 600; }
+        .day-header { font-size: 0.75em; font-weight: normal; color: #57606a; padding-bottom: 8px; }
+        .weekend { color: #cf222e; background-color: #ffebe9; }
+        .name-col { position: sticky; left: 0; background-color: #ffffff; z-index: 2; text-align: left; min-width: 130px; border-right: 2px solid #d0d7de; }
+        .summary-col { background-color: #f0f9ff; font-weight: bold; color: #0969da; min-width: 70px; position: sticky; left: 130px; z-index: 2; border-right: 2px solid #d0d7de; }
         
-        td.summary-col, th.summary-col {
-            background-color: #f0f9ff;
-            font-weight: bold;
-            color: #0969da;
-            min-width: 70px;
-            position: sticky;
-            left: 130px;
-            z-index: 2;
-            border-right: 2px solid #d0d7de;
-        }
-        th.summary-col { background-color: #ddf4ff; color: #0969da; z-index: 3; }
-        
-        td:hover:not(.name-col):not(.summary-col) { background-color: #f0f9ff; }
-        
-        input[type="checkbox"] { 
-            width: 20px; 
-            height: 20px; 
-            cursor: pointer; 
-            accent-color: #0969da;
-            margin: 0;
-            pointer-events: none;
-        }
-        .stats {
-            margin-top: 16px;
-            text-align: center;
-            font-size: 0.95em;
-            color: #57606a;
-        }
-        .stats-count { font-weight: bold; color: #0969da; }
-
-        /* Скрытая секция для печати отчета */
         #printSection { display: none; }
 
         @media print {
-            body { background-color: #ffffff; color: #000000; padding: 0; margin: 0; }
+            body { background-color: #ffffff; color: #000000; }
             .controls, .table-wrapper, .stats, h1 { display: none !important; }
             #printSection { display: block !important; }
-            
             .print-header { text-align: center; margin-bottom: 30px; }
-            .print-header h2 { margin: 0 0 10px 0; font-size: 16pt; }
-            .print-header p { margin: 0; color: #555; font-size: 11pt; }
-            
-            .print-list { display: flex; flex-direction: column; gap: 12px; }
-            .print-item { 
-                border-bottom: 1px solid #eee; 
-                padding-bottom: 10px; 
-                page-break-inside: avoid;
-            }
-            .print-item-header { 
-                display: flex; 
-                justify-content: space-between; 
-                align-items: baseline;
-                margin-bottom: 4px;
-            }
-            .print-name { font-weight: bold; font-size: 12pt; }
-            .print-total { font-weight: bold; font-size: 11pt; }
-            .print-dates { font-size: 10pt; color: #444; line-height: 1.4; }
-            .print-dates span { display: inline-block; background: #f0f3f6; padding: 2px 6px; border-radius: 4px; margin: 2px 4px 2px 0; border: 1px solid #d0d7de; }
-            
-            .print-summary { margin-top: 30px; text-align: right; font-size: 14pt; font-weight: bold; border-top: 2px solid #000; padding-top: 10px; }
+            .print-item { border-bottom: 1px solid #eee; padding: 10px 0; }
+            .print-item-header { display: flex; justify-content: space-between; font-weight: bold; }
+            .print-dates span { display: inline-block; background: #f0f3f6; padding: 2px 6px; margin: 2px; border: 1px solid #d0d7de; }
+            .print-summary { margin-top: 30px; text-align: right; font-weight: bold; border-top: 2px solid #000; }
         }
     </style>
 </head>
@@ -163,149 +79,87 @@
         <button class="btn-print" onclick="prepareAndPrint()">Распечатать отчет</button>
     </div>
 
-    <h1>Трекер объятий</h1>
+    <h1>Подсчет обнимашек в группе 161</h1>
     
     <div class="table-wrapper">
-        <table>
-            <thead>
-                <tr>
-                    <th class="name-col" rowspan="2">Имя</th>
-                    <th class="summary-col" rowspan="2">Итого</th>
-                    <th>03.06</th><th>04.06</th><th>05.06</th><th>06.06</th><th>07.06</th><th>08.06</th><th>09.06</th><th>10.06</th><th>11.06</th><th>12.06</th><th>13.06</th><th>14.06</th><th>15.06</th><th>16.06</th><th>17.06</th><th>18.06</th><th>19.06</th><th>20.06</th><th>21.06</th><th>22.06</th><th>23.06</th><th>24.06</th><th>25.06</th><th>26.06</th><th>27.06</th><th>28.06</th><th>29.06</th><th>30.06</th><th>01.07</th><th>02.07</th><th>03.07</th><th>04.07</th><th>05.07</th><th>06.07</th><th>07.07</th>
-                </tr>
-                <tr>
-                    <th class='day-header'>Ср</th><th class='day-header'>Чт</th><th class='day-header'>Пт</th><th class='day-header weekend'>Сб</th><th class='day-header weekend'>Вс</th><th class='day-header'>Пн</th><th class='day-header'>Вт</th><th class='day-header'>Ср</th><th class='day-header'>Чт</th><th class='day-header'>Пт</th><th class='day-header weekend'>Сб</th><th class='day-header weekend'>Вс</th><th class='day-header'>Пн</th><th class='day-header'>Вт</th><th class='day-header'>Ср</th><th class='day-header'>Чт</th><th class='day-header'>Пт</th><th class='day-header weekend'>Сб</th><th class='day-header weekend'>Вс</th><th class='day-header'>Пн</th><th class='day-header'>Вт</th><th class='day-header'>Ср</th><th class='day-header'>Чт</th><th class='day-header'>Пт</th><th class='day-header weekend'>Сб</th><th class='day-header weekend'>Вс</th><th class='day-header'>Пн</th><th class='day-header'>Вт</th><th class='day-header'>Ср</th><th class='day-header'>Чт</th><th class='day-header'>Пт</th><th class='day-header weekend'>Сб</th><th class='day-header weekend'>Вс</th><th class='day-header'>Пн</th><th class='day-header'>Вт</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr><td class="name-col">Авра</td><td class="summary-col" id="sum_0">0</td><td onclick="toggleCheck(0, 0)"><input type="checkbox" id="cb_0_0"></td><td onclick="toggleCheck(0, 1)"><input type="checkbox" id="cb_0_1"></td><td onclick="toggleCheck(0, 2)"><input type="checkbox" id="cb_0_2"></td><td onclick="toggleCheck(0, 3)"><input type="checkbox" id="cb_0_3"></td><td onclick="toggleCheck(0, 4)"><input type="checkbox" id="cb_0_4"></td><td onclick="toggleCheck(0, 5)"><input type="checkbox" id="cb_0_5"></td><td onclick="toggleCheck(0, 6)"><input type="checkbox" id="cb_0_6"></td><td onclick="toggleCheck(0, 7)"><input type="checkbox" id="cb_0_7"></td><td onclick="toggleCheck(0, 8)"><input type="checkbox" id="cb_0_8"></td><td onclick="toggleCheck(0, 9)"><input type="checkbox" id="cb_0_9"></td><td onclick="toggleCheck(0, 10)"><input type="checkbox" id="cb_0_10"></td><td onclick="toggleCheck(0, 11)"><input type="checkbox" id="cb_0_11"></td><td onclick="toggleCheck(0, 12)"><input type="checkbox" id="cb_0_12"></td><td onclick="toggleCheck(0, 13)"><input type="checkbox" id="cb_0_13"></td><td onclick="toggleCheck(0, 14)"><input type="checkbox" id="cb_0_14"></td><td onclick="toggleCheck(0, 15)"><input type="checkbox" id="cb_0_15"></td><td onclick="toggleCheck(0, 16)"><input type="checkbox" id="cb_0_16"></td><td onclick="toggleCheck(0, 17)"><input type="checkbox" id="cb_0_17"></td><td onclick="toggleCheck(0, 18)"><input type="checkbox" id="cb_0_18"></td><td onclick="toggleCheck(0, 19)"><input type="checkbox" id="cb_0_19"></td><td onclick="toggleCheck(0, 20)"><input type="checkbox" id="cb_0_20"></td><td onclick="toggleCheck(0, 21)"><input type="checkbox" id="cb_0_21"></td><td onclick="toggleCheck(0, 22)"><input type="checkbox" id="cb_0_22"></td><td onclick="toggleCheck(0, 23)"><input type="checkbox" id="cb_0_23"></td><td onclick="toggleCheck(0, 24)"><input type="checkbox" id="cb_0_24"></td><td onclick="toggleCheck(0, 25)"><input type="checkbox" id="cb_0_25"></td><td onclick="toggleCheck(0, 26)"><input type="checkbox" id="cb_0_26"></td><td onclick="toggleCheck(0, 27)"><input type="checkbox" id="cb_0_27"></td><td onclick="toggleCheck(0, 28)"><input type="checkbox" id="cb_0_28"></td><td onclick="toggleCheck(0, 29)"><input type="checkbox" id="cb_0_29"></td><td onclick="toggleCheck(0, 30)"><input type="checkbox" id="cb_0_30"></td><td onclick="toggleCheck(0, 31)"><input type="checkbox" id="cb_0_31"></td><td onclick="toggleCheck(0, 32)"><input type="checkbox" id="cb_0_32"></td><td onclick="toggleCheck(0, 33)"><input type="checkbox" id="cb_0_33"></td><td onclick="toggleCheck(0, 34)"><input type="checkbox" id="cb_0_34"></td></tr><tr><td class="name-col">Астидамия</td><td class="summary-col" id="sum_1">0</td><td onclick="toggleCheck(1, 0)"><input type="checkbox" id="cb_1_0"></td><td onclick="toggleCheck(1, 1)"><input type="checkbox" id="cb_1_1"></td><td onclick="toggleCheck(1, 2)"><input type="checkbox" id="cb_1_2"></td><td onclick="toggleCheck(1, 3)"><input type="checkbox" id="cb_1_3"></td><td onclick="toggleCheck(1, 4)"><input type="checkbox" id="cb_1_4"></td><td onclick="toggleCheck(1, 5)"><input type="checkbox" id="cb_1_5"></td><td onclick="toggleCheck(1, 6)"><input type="checkbox" id="cb_1_6"></td><td onclick="toggleCheck(1, 7)"><input type="checkbox" id="cb_1_7"></td><td onclick="toggleCheck(1, 8)"><input type="checkbox" id="cb_1_8"></td><td onclick="toggleCheck(1, 9)"><input type="checkbox" id="cb_1_9"></td><td onclick="toggleCheck(1, 10)"><input type="checkbox" id="cb_1_10"></td><td onclick="toggleCheck(1, 11)"><input type="checkbox" id="cb_1_11"></td><td onclick="toggleCheck(1, 12)"><input type="checkbox" id="cb_1_12"></td><td onclick="toggleCheck(1, 13)"><input type="checkbox" id="cb_1_13"></td><td onclick="toggleCheck(1, 14)"><input type="checkbox" id="cb_1_14"></td><td onclick="toggleCheck(1, 15)"><input type="checkbox" id="cb_1_15"></td><td onclick="toggleCheck(1, 16)"><input type="checkbox" id="cb_1_16"></td><td onclick="toggleCheck(1, 17)"><input type="checkbox" id="cb_1_17"></td><td onclick="toggleCheck(1, 18)"><input type="checkbox" id="cb_1_18"></td><td onclick="toggleCheck(1, 19)"><input type="checkbox" id="cb_1_19"></td><td onclick="toggleCheck(1, 20)"><input type="checkbox" id="cb_1_20"></td><td onclick="toggleCheck(1, 21)"><input type="checkbox" id="cb_1_21"></td><td onclick="toggleCheck(1, 22)"><input type="checkbox" id="cb_1_22"></td><td onclick="toggleCheck(1, 23)"><input type="checkbox" id="cb_1_23"></td><td onclick="toggleCheck(1, 24)"><input type="checkbox" id="cb_1_24"></td><td onclick="toggleCheck(1, 25)"><input type="checkbox" id="cb_1_25"></td><td onclick="toggleCheck(1, 26)"><input type="checkbox" id="cb_1_26"></td><td onclick="toggleCheck(1, 27)"><input type="checkbox" id="cb_1_27"></td><td onclick="toggleCheck(1, 28)"><input type="checkbox" id="cb_1_28"></td><td onclick="toggleCheck(1, 29)"><input type="checkbox" id="cb_1_29"></td><td onclick="toggleCheck(1, 30)"><input type="checkbox" id="cb_1_30"></td><td onclick="toggleCheck(1, 31)"><input type="checkbox" id="cb_1_31"></td><td onclick="toggleCheck(1, 32)"><input type="checkbox" id="cb_1_32"></td><td onclick="toggleCheck(1, 33)"><input type="checkbox" id="cb_1_33"></td><td onclick="toggleCheck(1, 34)"><input type="checkbox" id="cb_1_34"></td></tr><tr><td class="name-col">Дорида</td><td class="summary-col" id="sum_2">0</td><td onclick="toggleCheck(2, 0)"><input type="checkbox" id="cb_2_0"></td><td onclick="toggleCheck(2, 1)"><input type="checkbox" id="cb_2_1"></td><td onclick="toggleCheck(2, 2)"><input type="checkbox" id="cb_2_2"></td><td onclick="toggleCheck(2, 3)"><input type="checkbox" id="cb_2_3"></td><td onclick="toggleCheck(2, 4)"><input type="checkbox" id="cb_2_4"></td><td onclick="toggleCheck(2, 5)"><input type="checkbox" id="cb_2_5"></td><td onclick="toggleCheck(2, 6)"><input type="checkbox" id="cb_2_6"></td><td onclick="toggleCheck(2, 7)"><input type="checkbox" id="cb_2_7"></td><td onclick="toggleCheck(2, 8)"><input type="checkbox" id="cb_2_8"></td><td onclick="toggleCheck(2, 9)"><input type="checkbox" id="cb_2_9"></td><td onclick="toggleCheck(2, 10)"><input type="checkbox" id="cb_2_10"></td><td onclick="toggleCheck(2, 11)"><input type="checkbox" id="cb_2_11"></td><td onclick="toggleCheck(2, 12)"><input type="checkbox" id="cb_2_12"></td><td onclick="toggleCheck(2, 13)"><input type="checkbox" id="cb_2_13"></td><td onclick="toggleCheck(2, 14)"><input type="checkbox" id="cb_2_14"></td><td onclick="toggleCheck(2, 15)"><input type="checkbox" id="cb_2_15"></td><td onclick="toggleCheck(2, 16)"><input type="checkbox" id="cb_2_16"></td><td onclick="toggleCheck(2, 17)"><input type="checkbox" id="cb_2_17"></td><td onclick="toggleCheck(2, 18)"><input type="checkbox" id="cb_2_18"></td><td onclick="toggleCheck(2, 19)"><input type="checkbox" id="cb_2_19"></td><td onclick="toggleCheck(2, 20)"><input type="checkbox" id="cb_2_20"></td><td onclick="toggleCheck(2, 21)"><input type="checkbox" id="cb_2_21"></td><td onclick="toggleCheck(2, 22)"><input type="checkbox" id="cb_2_22"></td><td onclick="toggleCheck(2, 23)"><input type="checkbox" id="cb_2_23"></td><td onclick="toggleCheck(2, 24)"><input type="checkbox" id="cb_2_24"></td><td onclick="toggleCheck(2, 25)"><input type="checkbox" id="cb_2_25"></td><td onclick="toggleCheck(2, 26)"><input type="checkbox" id="cb_2_26"></td><td onclick="toggleCheck(2, 27)"><input type="checkbox" id="cb_2_27"></td><td onclick="toggleCheck(2, 28)"><input type="checkbox" id="cb_2_28"></td><td onclick="toggleCheck(2, 29)"><input type="checkbox" id="cb_2_29"></td><td onclick="toggleCheck(2, 30)"><input type="checkbox" id="cb_2_30"></td><td onclick="toggleCheck(2, 31)"><input type="checkbox" id="cb_2_31"></td><td onclick="toggleCheck(2, 32)"><input type="checkbox" id="cb_2_32"></td><td onclick="toggleCheck(2, 33)"><input type="checkbox" id="cb_2_33"></td><td onclick="toggleCheck(2, 34)"><input type="checkbox" id="cb_2_34"></td></tr><tr><td class="name-col">Крессида</td><td class="summary-col" id="sum_3">0</td><td onclick="toggleCheck(3, 0)"><input type="checkbox" id="cb_3_0"></td><td onclick="toggleCheck(3, 1)"><input type="checkbox" id="cb_3_1"></td><td onclick="toggleCheck(3, 2)"><input type="checkbox" id="cb_3_2"></td><td onclick="toggleCheck(3, 3)"><input type="checkbox" id="cb_3_3"></td><td onclick="toggleCheck(3, 4)"><input type="checkbox" id="cb_3_4"></td><td onclick="toggleCheck(3, 5)"><input type="checkbox" id="cb_3_5"></td><td onclick="toggleCheck(3, 6)"><input type="checkbox" id="cb_3_6"></td><td onclick="toggleCheck(3, 7)"><input type="checkbox" id="cb_3_7"></td><td onclick="toggleCheck(3, 8)"><input type="checkbox" id="cb_3_8"></td><td onclick="toggleCheck(3, 9)"><input type="checkbox" id="cb_3_9"></td><td onclick="toggleCheck(3, 10)"><input type="checkbox" id="cb_3_10"></td><td onclick="toggleCheck(3, 11)"><input type="checkbox" id="cb_3_11"></td><td onclick="toggleCheck(3, 12)"><input type="checkbox" id="cb_3_12"></td><td onclick="toggleCheck(3, 13)"><input type="checkbox" id="cb_3_13"></td><td onclick="toggleCheck(3, 14)"><input type="checkbox" id="cb_3_14"></td><td onclick="toggleCheck(3, 15)"><input type="checkbox" id="cb_3_15"></td><td onclick="toggleCheck(3, 16)"><input type="checkbox" id="cb_3_16"></td><td onclick="toggleCheck(3, 17)"><input type="checkbox" id="cb_3_17"></td><td onclick="toggleCheck(3, 18)"><input type="checkbox" id="cb_3_18"></td><td onclick="toggleCheck(3, 19)"><input type="checkbox" id="cb_3_19"></td><td onclick="toggleCheck(3, 20)"><input type="checkbox" id="cb_3_20"></td><td onclick="toggleCheck(3, 21)"><input type="checkbox" id="cb_3_21"></td><td onclick="toggleCheck(3, 22)"><input type="checkbox" id="cb_3_22"></td><td onclick="toggleCheck(3, 23)"><input type="checkbox" id="cb_3_23"></td><td onclick="toggleCheck(3, 24)"><input type="checkbox" id="cb_3_24"></td><td onclick="toggleCheck(3, 25)"><input type="checkbox" id="cb_3_25"></td><td onclick="toggleCheck(3, 26)"><input type="checkbox" id="cb_3_26"></td><td onclick="toggleCheck(3, 27)"><input type="checkbox" id="cb_3_27"></td><td onclick="toggleCheck(3, 28)"><input type="checkbox" id="cb_3_28"></td><td onclick="toggleCheck(3, 29)"><input type="checkbox" id="cb_3_29"></td><td onclick="toggleCheck(3, 30)"><input type="checkbox" id="cb_3_30"></td><td onclick="toggleCheck(3, 31)"><input type="checkbox" id="cb_3_31"></td><td onclick="toggleCheck(3, 32)"><input type="checkbox" id="cb_3_32"></td><td onclick="toggleCheck(3, 33)"><input type="checkbox" id="cb_3_33"></td><td onclick="toggleCheck(3, 34)"><input type="checkbox" id="cb_3_34"></td></tr><tr><td class="name-col">Нереида</td><td class="summary-col" id="sum_4">0</td><td onclick="toggleCheck(4, 0)"><input type="checkbox" id="cb_4_0"></td><td onclick="toggleCheck(4, 1)"><input type="checkbox" id="cb_4_1"></td><td onclick="toggleCheck(4, 2)"><input type="checkbox" id="cb_4_2"></td><td onclick="toggleCheck(4, 3)"><input type="checkbox" id="cb_4_3"></td><td onclick="toggleCheck(4, 4)"><input type="checkbox" id="cb_4_4"></td><td onclick="toggleCheck(4, 5)"><input type="checkbox" id="cb_4_5"></td><td onclick="toggleCheck(4, 6)"><input type="checkbox" id="cb_4_6"></td><td onclick="toggleCheck(4, 7)"><input type="checkbox" id="cb_4_7"></td><td onclick="toggleCheck(4, 8)"><input type="checkbox" id="cb_4_8"></td><td onclick="toggleCheck(4, 9)"><input type="checkbox" id="cb_4_9"></td><td onclick="toggleCheck(4, 10)"><input type="checkbox" id="cb_4_10"></td><td onclick="toggleCheck(4, 11)"><input type="checkbox" id="cb_4_11"></td><td onclick="toggleCheck(4, 12)"><input type="checkbox" id="cb_4_12"></td><td onclick="toggleCheck(4, 13)"><input type="checkbox" id="cb_4_13"></td><td onclick="toggleCheck(4, 14)"><input type="checkbox" id="cb_4_14"></td><td onclick="toggleCheck(4, 15)"><input type="checkbox" id="cb_4_15"></td><td onclick="toggleCheck(4, 16)"><input type="checkbox" id="cb_4_16"></td><td onclick="toggleCheck(4, 17)"><input type="checkbox" id="cb_4_17"></td><td onclick="toggleCheck(4, 18)"><input type="checkbox" id="cb_4_18"></td><td onclick="toggleCheck(4, 19)"><input type="checkbox" id="cb_4_19"></td><td onclick="toggleCheck(4, 20)"><input type="checkbox" id="cb_4_20"></td><td onclick="toggleCheck(4, 21)"><input type="checkbox" id="cb_4_21"></td><td onclick="toggleCheck(4, 22)"><input type="checkbox" id="cb_4_22"></td><td onclick="toggleCheck(4, 23)"><input type="checkbox" id="cb_4_23"></td><td onclick="toggleCheck(4, 24)"><input type="checkbox" id="cb_4_24"></td><td onclick="toggleCheck(4, 25)"><input type="checkbox" id="cb_4_25"></td><td onclick="toggleCheck(4, 26)"><input type="checkbox" id="cb_4_26"></td><td onclick="toggleCheck(4, 27)"><input type="checkbox" id="cb_4_27"></td><td onclick="toggleCheck(4, 28)"><input type="checkbox" id="cb_4_28"></td><td onclick="toggleCheck(4, 29)"><input type="checkbox" id="cb_4_29"></td><td onclick="toggleCheck(4, 30)"><input type="checkbox" id="cb_4_30"></td><td onclick="toggleCheck(4, 31)"><input type="checkbox" id="cb_4_31"></td><td onclick="toggleCheck(4, 32)"><input type="checkbox" id="cb_4_32"></td><td onclick="toggleCheck(4, 33)"><input type="checkbox" id="cb_4_33"></td><td onclick="toggleCheck(4, 34)"><input type="checkbox" id="cb_4_34"></td></tr><tr><td class="name-col">Ойзис</td><td class="summary-col" id="sum_5">0</td><td onclick="toggleCheck(5, 0)"><input type="checkbox" id="cb_5_0"></td><td onclick="toggleCheck(5, 1)"><input type="checkbox" id="cb_5_1"></td><td onclick="toggleCheck(5, 2)"><input type="checkbox" id="cb_5_2"></td><td onclick="toggleCheck(5, 3)"><input type="checkbox" id="cb_5_3"></td><td onclick="toggleCheck(5, 4)"><input type="checkbox" id="cb_5_4"></td><td onclick="toggleCheck(5, 5)"><input type="checkbox" id="cb_5_5"></td><td onclick="toggleCheck(5, 6)"><input type="checkbox" id="cb_5_6"></td><td onclick="toggleCheck(5, 7)"><input type="checkbox" id="cb_5_7"></td><td onclick="toggleCheck(5, 8)"><input type="checkbox" id="cb_5_8"></td><td onclick="toggleCheck(5, 9)"><input type="checkbox" id="cb_5_9"></td><td onclick="toggleCheck(5, 10)"><input type="checkbox" id="cb_5_10"></td><td onclick="toggleCheck(5, 11)"><input type="checkbox" id="cb_5_11"></td><td onclick="toggleCheck(5, 12)"><input type="checkbox" id="cb_5_12"></td><td onclick="toggleCheck(5, 13)"><input type="checkbox" id="cb_5_13"></td><td onclick="toggleCheck(5, 14)"><input type="checkbox" id="cb_5_14"></td><td onclick="toggleCheck(5, 15)"><input type="checkbox" id="cb_5_15"></td><td onclick="toggleCheck(5, 16)"><input type="checkbox" id="cb_5_16"></td><td onclick="toggleCheck(5, 17)"><input type="checkbox" id="cb_5_17"></td><td onclick="toggleCheck(5, 18)"><input type="checkbox" id="cb_5_18"></td><td onclick="toggleCheck(5, 19)"><input type="checkbox" id="cb_5_19"></td><td onclick="toggleCheck(5, 20)"><input type="checkbox" id="cb_5_20"></td><td onclick="toggleCheck(5, 21)"><input type="checkbox" id="cb_5_21"></td><td onclick="toggleCheck(5, 22)"><input type="checkbox" id="cb_5_22"></td><td onclick="toggleCheck(5, 23)"><input type="checkbox" id="cb_5_23"></td><td onclick="toggleCheck(5, 24)"><input type="checkbox" id="cb_5_24"></td><td onclick="toggleCheck(5, 25)"><input type="checkbox" id="cb_5_25"></td><td onclick="toggleCheck(5, 26)"><input type="checkbox" id="cb_5_26"></td><td onclick="toggleCheck(5, 27)"><input type="checkbox" id="cb_5_27"></td><td onclick="toggleCheck(5, 28)"><input type="checkbox" id="cb_5_28"></td><td onclick="toggleCheck(5, 29)"><input type="checkbox" id="cb_5_29"></td><td onclick="toggleCheck(5, 30)"><input type="checkbox" id="cb_5_30"></td><td onclick="toggleCheck(5, 31)"><input type="checkbox" id="cb_5_31"></td><td onclick="toggleCheck(5, 32)"><input type="checkbox" id="cb_5_32"></td><td onclick="toggleCheck(5, 33)"><input type="checkbox" id="cb_5_33"></td><td onclick="toggleCheck(5, 34)"><input type="checkbox" id="cb_5_34"></td></tr><tr><td class="name-col">Парфенопа</td><td class="summary-col" id="sum_6">0</td><td onclick="toggleCheck(6, 0)"><input type="checkbox" id="cb_6_0"></td><td onclick="toggleCheck(6, 1)"><input type="checkbox" id="cb_6_1"></td><td onclick="toggleCheck(6, 2)"><input type="checkbox" id="cb_6_2"></td><td onclick="toggleCheck(6, 3)"><input type="checkbox" id="cb_6_3"></td><td onclick="toggleCheck(6, 4)"><input type="checkbox" id="cb_6_4"></td><td onclick="toggleCheck(6, 5)"><input type="checkbox" id="cb_6_5"></td><td onclick="toggleCheck(6, 6)"><input type="checkbox" id="cb_6_6"></td><td onclick="toggleCheck(6, 7)"><input type="checkbox" id="cb_6_7"></td><td onclick="toggleCheck(6, 8)"><input type="checkbox" id="cb_6_8"></td><td onclick="toggleCheck(6, 9)"><input type="checkbox" id="cb_6_9"></td><td onclick="toggleCheck(6, 10)"><input type="checkbox" id="cb_6_10"></td><td onclick="toggleCheck(6, 11)"><input type="checkbox" id="cb_6_11"></td><td onclick="toggleCheck(6, 12)"><input type="checkbox" id="cb_6_12"></td><td onclick="toggleCheck(6, 13)"><input type="checkbox" id="cb_6_13"></td><td onclick="toggleCheck(6, 14)"><input type="checkbox" id="cb_6_14"></td><td onclick="toggleCheck(6, 15)"><input type="checkbox" id="cb_6_15"></td><td onclick="toggleCheck(6, 16)"><input type="checkbox" id="cb_6_16"></td><td onclick="toggleCheck(6, 17)"><input type="checkbox" id="cb_6_17"></td><td onclick="toggleCheck(6, 18)"><input type="checkbox" id="cb_6_18"></td><td onclick="toggleCheck(6, 19)"><input type="checkbox" id="cb_6_19"></td><td onclick="toggleCheck(6, 20)"><input type="checkbox" id="cb_6_20"></td><td onclick="toggleCheck(6, 21)"><input type="checkbox" id="cb_6_21"></td><td onclick="toggleCheck(6, 22)"><input type="checkbox" id="cb_6_22"></td><td onclick="toggleCheck(6, 23)"><input type="checkbox" id="cb_6_23"></td><td onclick="toggleCheck(6, 24)"><input type="checkbox" id="cb_6_24"></td><td onclick="toggleCheck(6, 25)"><input type="checkbox" id="cb_6_25"></td><td onclick="toggleCheck(6, 26)"><input type="checkbox" id="cb_6_26"></td><td onclick="toggleCheck(6, 27)"><input type="checkbox" id="cb_6_27"></td><td onclick="toggleCheck(6, 28)"><input type="checkbox" id="cb_6_28"></td><td onclick="toggleCheck(6, 29)"><input type="checkbox" id="cb_6_29"></td><td onclick="toggleCheck(6, 30)"><input type="checkbox" id="cb_6_30"></td><td onclick="toggleCheck(6, 31)"><input type="checkbox" id="cb_6_31"></td><td onclick="toggleCheck(6, 32)"><input type="checkbox" id="cb_6_32"></td><td onclick="toggleCheck(6, 33)"><input type="checkbox" id="cb_6_33"></td><td onclick="toggleCheck(6, 34)"><input type="checkbox" id="cb_6_34"></td></tr><tr><td class="name-col">Прокрида</td><td class="summary-col" id="sum_7">0</td><td onclick="toggleCheck(7, 0)"><input type="checkbox" id="cb_7_0"></td><td onclick="toggleCheck(7, 1)"><input type="checkbox" id="cb_7_1"></td><td onclick="toggleCheck(7, 2)"><input type="checkbox" id="cb_7_2"></td><td onclick="toggleCheck(7, 3)"><input type="checkbox" id="cb_7_3"></td><td onclick="toggleCheck(7, 4)"><input type="checkbox" id="cb_7_4"></td><td onclick="toggleCheck(7, 5)"><input type="checkbox" id="cb_7_5"></td><td onclick="toggleCheck(7, 6)"><input type="checkbox" id="cb_7_6"></td><td onclick="toggleCheck(7, 7)"><input type="checkbox" id="cb_7_7"></td><td onclick="toggleCheck(7, 8)"><input type="checkbox" id="cb_7_8"></td><td onclick="toggleCheck(7, 9)"><input type="checkbox" id="cb_7_9"></td><td onclick="toggleCheck(7, 10)"><input type="checkbox" id="cb_7_10"></td><td onclick="toggleCheck(7, 11)"><input type="checkbox" id="cb_7_11"></td><td onclick="toggleCheck(7, 12)"><input type="checkbox" id="cb_7_12"></td><td onclick="toggleCheck(7, 13)"><input type="checkbox" id="cb_7_13"></td><td onclick="toggleCheck(7, 14)"><input type="checkbox" id="cb_7_14"></td><td onclick="toggleCheck(7, 15)"><input type="checkbox" id="cb_7_15"></td><td onclick="toggleCheck(7, 16)"><input type="checkbox" id="cb_7_16"></td><td onclick="toggleCheck(7, 17)"><input type="checkbox" id="cb_7_17"></td><td onclick="toggleCheck(7, 18)"><input type="checkbox" id="cb_7_18"></td><td onclick="toggleCheck(7, 19)"><input type="checkbox" id="cb_7_19"></td><td onclick="toggleCheck(7, 20)"><input type="checkbox" id="cb_7_20"></td><td onclick="toggleCheck(7, 21)"><input type="checkbox" id="cb_7_21"></td><td onclick="toggleCheck(7, 22)"><input type="checkbox" id="cb_7_22"></td><td onclick="toggleCheck(7, 23)"><input type="checkbox" id="cb_7_23"></td><td onclick="toggleCheck(7, 24)"><input type="checkbox" id="cb_7_24"></td><td onclick="toggleCheck(7, 25)"><input type="checkbox" id="cb_7_25"></td><td onclick="toggleCheck(7, 26)"><input type="checkbox" id="cb_7_26"></td><td onclick="toggleCheck(7, 27)"><input type="checkbox" id="cb_7_27"></td><td onclick="toggleCheck(7, 28)"><input type="checkbox" id="cb_7_28"></td><td onclick="toggleCheck(7, 29)"><input type="checkbox" id="cb_7_29"></td><td onclick="toggleCheck(7, 30)"><input type="checkbox" id="cb_7_30"></td><td onclick="toggleCheck(7, 31)"><input type="checkbox" id="cb_7_31"></td><td onclick="toggleCheck(7, 32)"><input type="checkbox" id="cb_7_32"></td><td onclick="toggleCheck(7, 33)"><input type="checkbox" id="cb_7_33"></td><td onclick="toggleCheck(7, 34)"><input type="checkbox" id="cb_7_34"></td></tr><tr><td class="name-col">Стримо</td><td class="summary-col" id="sum_8">0</td><td onclick="toggleCheck(8, 0)"><input type="checkbox" id="cb_8_0"></td><td onclick="toggleCheck(8, 1)"><input type="checkbox" id="cb_8_1"></td><td onclick="toggleCheck(8, 2)"><input type="checkbox" id="cb_8_2"></td><td onclick="toggleCheck(8, 3)"><input type="checkbox" id="cb_8_3"></td><td onclick="toggleCheck(8, 4)"><input type="checkbox" id="cb_8_4"></td><td onclick="toggleCheck(8, 5)"><input type="checkbox" id="cb_8_5"></td><td onclick="toggleCheck(8, 6)"><input type="checkbox" id="cb_8_6"></td><td onclick="toggleCheck(8, 7)"><input type="checkbox" id="cb_8_7"></td><td onclick="toggleCheck(8, 8)"><input type="checkbox" id="cb_8_8"></td><td onclick="toggleCheck(8, 9)"><input type="checkbox" id="cb_8_9"></td><td onclick="toggleCheck(8, 10)"><input type="checkbox" id="cb_8_10"></td><td onclick="toggleCheck(8, 11)"><input type="checkbox" id="cb_8_11"></td><td onclick="toggleCheck(8, 12)"><input type="checkbox" id="cb_8_12"></td><td onclick="toggleCheck(8, 13)"><input type="checkbox" id="cb_8_13"></td><td onclick="toggleCheck(8, 14)"><input type="checkbox" id="cb_8_14"></td><td onclick="toggleCheck(8, 15)"><input type="checkbox" id="cb_8_15"></td><td onclick="toggleCheck(8, 16)"><input type="checkbox" id="cb_8_16"></td><td onclick="toggleCheck(8, 17)"><input type="checkbox" id="cb_8_17"></td><td onclick="toggleCheck(8, 18)"><input type="checkbox" id="cb_8_18"></td><td onclick="toggleCheck(8, 19)"><input type="checkbox" id="cb_8_19"></td><td onclick="toggleCheck(8, 20)"><input type="checkbox" id="cb_8_20"></td><td onclick="toggleCheck(8, 21)"><input type="checkbox" id="cb_8_21"></td><td onclick="toggleCheck(8, 22)"><input type="checkbox" id="cb_8_22"></td><td onclick="toggleCheck(8, 23)"><input type="checkbox" id="cb_8_23"></td><td onclick="toggleCheck(8, 24)"><input type="checkbox" id="cb_8_24"></td><td onclick="toggleCheck(8, 25)"><input type="checkbox" id="cb_8_25"></td><td onclick="toggleCheck(8, 26)"><input type="checkbox" id="cb_8_26"></td><td onclick="toggleCheck(8, 27)"><input type="checkbox" id="cb_8_27"></td><td onclick="toggleCheck(8, 28)"><input type="checkbox" id="cb_8_28"></td><td onclick="toggleCheck(8, 29)"><input type="checkbox" id="cb_8_29"></td><td onclick="toggleCheck(8, 30)"><input type="checkbox" id="cb_8_30"></td><td onclick="toggleCheck(8, 31)"><input type="checkbox" id="cb_8_31"></td><td onclick="toggleCheck(8, 32)"><input type="checkbox" id="cb_8_32"></td><td onclick="toggleCheck(8, 33)"><input type="checkbox" id="cb_8_33"></td><td onclick="toggleCheck(8, 34)"><input type="checkbox" id="cb_8_34"></td></tr><tr><td class="name-col">Талло</td><td class="summary-col" id="sum_9">0</td><td onclick="toggleCheck(9, 0)"><input type="checkbox" id="cb_9_0"></td><td onclick="toggleCheck(9, 1)"><input type="checkbox" id="cb_9_1"></td><td onclick="toggleCheck(9, 2)"><input type="checkbox" id="cb_9_2"></td><td onclick="toggleCheck(9, 3)"><input type="checkbox" id="cb_9_3"></td><td onclick="toggleCheck(9, 4)"><input type="checkbox" id="cb_9_4"></td><td onclick="toggleCheck(9, 5)"><input type="checkbox" id="cb_9_5"></td><td onclick="toggleCheck(9, 6)"><input type="checkbox" id="cb_9_6"></td><td onclick="toggleCheck(9, 7)"><input type="checkbox" id="cb_9_7"></td><td onclick="toggleCheck(9, 8)"><input type="checkbox" id="cb_9_8"></td><td onclick="toggleCheck(9, 9)"><input type="checkbox" id="cb_9_9"></td><td onclick="toggleCheck(9, 10)"><input type="checkbox" id="cb_9_10"></td><td onclick="toggleCheck(9, 11)"><input type="checkbox" id="cb_9_11"></td><td onclick="toggleCheck(9, 12)"><input type="checkbox" id="cb_9_12"></td><td onclick="toggleCheck(9, 13)"><input type="checkbox" id="cb_9_13"></td><td onclick="toggleCheck(9, 14)"><input type="checkbox" id="cb_9_14"></td><td onclick="toggleCheck(9, 15)"><input type="checkbox" id="cb_9_15"></td><td onclick="toggleCheck(9, 16)"><input type="checkbox" id="cb_9_16"></td><td onclick="toggleCheck(9, 17)"><input type="checkbox" id="cb_9_17"></td><td onclick="toggleCheck(9, 18)"><input type="checkbox" id="cb_9_18"></td><td onclick="toggleCheck(9, 19)"><input type="checkbox" id="cb_9_19"></td><td onclick="toggleCheck(9, 20)"><input type="checkbox" id="cb_9_20"></td><td onclick="toggleCheck(9, 21)"><input type="checkbox" id="cb_9_21"></td><td onclick="toggleCheck(9, 22)"><input type="checkbox" id="cb_9_22"></td><td onclick="toggleCheck(9, 23)"><input type="checkbox" id="cb_9_23"></td><td onclick="toggleCheck(9, 24)"><input type="checkbox" id="cb_9_24"></td><td onclick="toggleCheck(9, 25)"><input type="checkbox" id="cb_9_25"></td><td onclick="toggleCheck(9, 26)"><input type="checkbox" id="cb_9_26"></td><td onclick="toggleCheck(9, 27)"><input type="checkbox" id="cb_9_27"></td><td onclick="toggleCheck(9, 28)"><input type="checkbox" id="cb_9_28"></td><td onclick="toggleCheck(9, 29)"><input type="checkbox" id="cb_9_29"></td><td onclick="toggleCheck(9, 30)"><input type="checkbox" id="cb_9_30"></td><td onclick="toggleCheck(9, 31)"><input type="checkbox" id="cb_9_31"></td><td onclick="toggleCheck(9, 32)"><input type="checkbox" id="cb_9_32"></td><td onclick="toggleCheck(9, 33)"><input type="checkbox" id="cb_9_33"></td><td onclick="toggleCheck(9, 34)"><input type="checkbox" id="cb_9_34"></td></tr><tr><td class="name-col">Хареа</td><td class="summary-col" id="sum_10">0</td><td onclick="toggleCheck(10, 0)"><input type="checkbox" id="cb_10_0"></td><td onclick="toggleCheck(10, 1)"><input type="checkbox" id="cb_10_1"></td><td onclick="toggleCheck(10, 2)"><input type="checkbox" id="cb_10_2"></td><td onclick="toggleCheck(10, 3)"><input type="checkbox" id="cb_10_3"></td><td onclick="toggleCheck(10, 4)"><input type="checkbox" id="cb_10_4"></td><td onclick="toggleCheck(10, 5)"><input type="checkbox" id="cb_10_5"></td><td onclick="toggleCheck(10, 6)"><input type="checkbox" id="cb_10_6"></td><td onclick="toggleCheck(10, 7)"><input type="checkbox" id="cb_10_7"></td><td onclick="toggleCheck(10, 8)"><input type="checkbox" id="cb_10_8"></td><td onclick="toggleCheck(10, 9)"><input type="checkbox" id="cb_10_9"></td><td onclick="toggleCheck(10, 10)"><input type="checkbox" id="cb_10_10"></td><td onclick="toggleCheck(10, 11)"><input type="checkbox" id="cb_10_11"></td><td onclick="toggleCheck(10, 12)"><input type="checkbox" id="cb_10_12"></td><td onclick="toggleCheck(10, 13)"><input type="checkbox" id="cb_10_13"></td><td onclick="toggleCheck(10, 14)"><input type="checkbox" id="cb_10_14"></td><td onclick="toggleCheck(10, 15)"><input type="checkbox" id="cb_10_15"></td><td onclick="toggleCheck(10, 16)"><input type="checkbox" id="cb_10_16"></td><td onclick="toggleCheck(10, 17)"><input type="checkbox" id="cb_10_17"></td><td onclick="toggleCheck(10, 18)"><input type="checkbox" id="cb_10_18"></td><td onclick="toggleCheck(10, 19)"><input type="checkbox" id="cb_10_19"></td><td onclick="toggleCheck(10, 20)"><input type="checkbox" id="cb_10_20"></td><td onclick="toggleCheck(10, 21)"><input type="checkbox" id="cb_10_21"></td><td onclick="toggleCheck(10, 22)"><input type="checkbox" id="cb_10_22"></td><td onclick="toggleCheck(10, 23)"><input type="checkbox" id="cb_10_23"></td><td onclick="toggleCheck(10, 24)"><input type="checkbox" id="cb_10_24"></td><td onclick="toggleCheck(10, 25)"><input type="checkbox" id="cb_10_25"></td><td onclick="toggleCheck(10, 26)"><input type="checkbox" id="cb_10_26"></td><td onclick="toggleCheck(10, 27)"><input type="checkbox" id="cb_10_27"></td><td onclick="toggleCheck(10, 28)"><input type="checkbox" id="cb_10_28"></td><td onclick="toggleCheck(10, 29)"><input type="checkbox" id="cb_10_29"></td><td onclick="toggleCheck(10, 30)"><input type="checkbox" id="cb_10_30"></td><td onclick="toggleCheck(10, 31)"><input type="checkbox" id="cb_10_31"></td><td onclick="toggleCheck(10, 32)"><input type="checkbox" id="cb_10_32"></td><td onclick="toggleCheck(10, 33)"><input type="checkbox" id="cb_10_33"></td><td onclick="toggleCheck(10, 34)"><input type="checkbox" id="cb_10_34"></td></tr><tr><td class="name-col">Эгина</td><td class="summary-col" id="sum_11">0</td><td onclick="toggleCheck(11, 0)"><input type="checkbox" id="cb_11_0"></td><td onclick="toggleCheck(11, 1)"><input type="checkbox" id="cb_11_1"></td><td onclick="toggleCheck(11, 2)"><input type="checkbox" id="cb_11_2"></td><td onclick="toggleCheck(11, 3)"><input type="checkbox" id="cb_11_3"></td><td onclick="toggleCheck(11, 4)"><input type="checkbox" id="cb_11_4"></td><td onclick="toggleCheck(11, 5)"><input type="checkbox" id="cb_11_5"></td><td onclick="toggleCheck(11, 6)"><input type="checkbox" id="cb_11_6"></td><td onclick="toggleCheck(11, 7)"><input type="checkbox" id="cb_11_7"></td><td onclick="toggleCheck(11, 8)"><input type="checkbox" id="cb_11_8"></td><td onclick="toggleCheck(11, 9)"><input type="checkbox" id="cb_11_9"></td><td onclick="toggleCheck(11, 10)"><input type="checkbox" id="cb_11_10"></td><td onclick="toggleCheck(11, 11)"><input type="checkbox" id="cb_11_11"></td><td onclick="toggleCheck(11, 12)"><input type="checkbox" id="cb_11_12"></td><td onclick="toggleCheck(11, 13)"><input type="checkbox" id="cb_11_13"></td><td onclick="toggleCheck(11, 14)"><input type="checkbox" id="cb_11_14"></td><td onclick="toggleCheck(11, 15)"><input type="checkbox" id="cb_11_15"></td><td onclick="toggleCheck(11, 16)"><input type="checkbox" id="cb_11_16"></td><td onclick="toggleCheck(11, 17)"><input type="checkbox" id="cb_11_17"></td><td onclick="toggleCheck(11, 18)"><input type="checkbox" id="cb_11_18"></td><td onclick="toggleCheck(11, 19)"><input type="checkbox" id="cb_11_19"></td><td onclick="toggleCheck(11, 20)"><input type="checkbox" id="cb_11_20"></td><td onclick="toggleCheck(11, 21)"><input type="checkbox" id="cb_11_21"></td><td onclick="toggleCheck(11, 22)"><input type="checkbox" id="cb_11_22"></td><td onclick="toggleCheck(11, 23)"><input type="checkbox" id="cb_11_23"></td><td onclick="toggleCheck(11, 24)"><input type="checkbox" id="cb_11_24"></td><td onclick="toggleCheck(11, 25)"><input type="checkbox" id="cb_11_25"></td><td onclick="toggleCheck(11, 26)"><input type="checkbox" id="cb_11_26"></td><td onclick="toggleCheck(11, 27)"><input type="checkbox" id="cb_11_27"></td><td onclick="toggleCheck(11, 28)"><input type="checkbox" id="cb_11_28"></td><td onclick="toggleCheck(11, 29)"><input type="checkbox" id="cb_11_29"></td><td onclick="toggleCheck(11, 30)"><input type="checkbox" id="cb_11_30"></td><td onclick="toggleCheck(11, 31)"><input type="checkbox" id="cb_11_31"></td><td onclick="toggleCheck(11, 32)"><input type="checkbox" id="cb_11_32"></td><td onclick="toggleCheck(11, 33)"><input type="checkbox" id="cb_11_33"></td><td onclick="toggleCheck(11, 34)"><input type="checkbox" id="cb_11_34"></td></tr><tr><td class="name-col">Энона</td><td class="summary-col" id="sum_12">0</td><td onclick="toggleCheck(12, 0)"><input type="checkbox" id="cb_12_0"></td><td onclick="toggleCheck(12, 1)"><input type="checkbox" id="cb_12_1"></td><td onclick="toggleCheck(12, 2)"><input type="checkbox" id="cb_12_2"></td><td onclick="toggleCheck(12, 3)"><input type="checkbox" id="cb_12_3"></td><td onclick="toggleCheck(12, 4)"><input type="checkbox" id="cb_12_4"></td><td onclick="toggleCheck(12, 5)"><input type="checkbox" id="cb_12_5"></td><td onclick="toggleCheck(12, 6)"><input type="checkbox" id="cb_12_6"></td><td onclick="toggleCheck(12, 7)"><input type="checkbox" id="cb_12_7"></td><td onclick="toggleCheck(12, 8)"><input type="checkbox" id="cb_12_8"></td><td onclick="toggleCheck(12, 9)"><input type="checkbox" id="cb_12_9"></td><td onclick="toggleCheck(12, 10)"><input type="checkbox" id="cb_12_10"></td><td onclick="toggleCheck(12, 11)"><input type="checkbox" id="cb_12_11"></td><td onclick="toggleCheck(12, 12)"><input type="checkbox" id="cb_12_12"></td><td onclick="toggleCheck(12, 13)"><input type="checkbox" id="cb_12_13"></td><td onclick="toggleCheck(12, 14)"><input type="checkbox" id="cb_12_14"></td><td onclick="toggleCheck(12, 15)"><input type="checkbox" id="cb_12_15"></td><td onclick="toggleCheck(12, 16)"><input type="checkbox" id="cb_12_16"></td><td onclick="toggleCheck(12, 17)"><input type="checkbox" id="cb_12_17"></td><td onclick="toggleCheck(12, 18)"><input type="checkbox" id="cb_12_18"></td><td onclick="toggleCheck(12, 19)"><input type="checkbox" id="cb_12_19"></td><td onclick="toggleCheck(12, 20)"><input type="checkbox" id="cb_12_20"></td><td onclick="toggleCheck(12, 21)"><input type="checkbox" id="cb_12_21"></td><td onclick="toggleCheck(12, 22)"><input type="checkbox" id="cb_12_22"></td><td onclick="toggleCheck(12, 23)"><input type="checkbox" id="cb_12_23"></td><td onclick="toggleCheck(12, 24)"><input type="checkbox" id="cb_12_24"></td><td onclick="toggleCheck(12, 25)"><input type="checkbox" id="cb_12_25"></td><td onclick="toggleCheck(12, 26)"><input type="checkbox" id="cb_12_26"></td><td onclick="toggleCheck(12, 27)"><input type="checkbox" id="cb_12_27"></td><td onclick="toggleCheck(12, 28)"><input type="checkbox" id="cb_12_28"></td><td onclick="toggleCheck(12, 29)"><input type="checkbox" id="cb_12_29"></td><td onclick="toggleCheck(12, 30)"><input type="checkbox" id="cb_12_30"></td><td onclick="toggleCheck(12, 31)"><input type="checkbox" id="cb_12_31"></td><td onclick="toggleCheck(12, 32)"><input type="checkbox" id="cb_12_32"></td><td onclick="toggleCheck(12, 33)"><input type="checkbox" id="cb_12_33"></td><td onclick="toggleCheck(12, 34)"><input type="checkbox" id="cb_12_34"></td></tr>
-            </tbody>
-        </table>
+        <table id="mainTable"></table>
     </div>
 
-    <div class="stats">
-        Всего объятий за весь период: <span class="stats-count" id="totalHugs">0</span>
-    </div>
-
-    <!-- Секция для красивой печати -->
+    <div class="stats">Всего: <span id="totalHugs">0</span></div>
     <div id="printSection"></div>
 
     <script>
-        const classmates = ['Авра', 'Астидамия', 'Дорида', 'Крессида', 'Нереида', 'Ойзис', 'Парфенопа', 'Прокрида', 'Стримо', 'Талло', 'Хареа', 'Эгина', 'Энона'];
-        const datesArray = [
-{ date: '03.06', day: 'Ср' },
-{ date: '04.06', day: 'Чт' },
-{ date: '05.06', day: 'Пт' },
-{ date: '06.06', day: 'Сб' },
-{ date: '07.06', day: 'Вс' },
-{ date: '08.06', day: 'Пн' },
-{ date: '09.06', day: 'Вт' },
-{ date: '10.06', day: 'Ср' },
-{ date: '11.06', day: 'Чт' },
-{ date: '12.06', day: 'Пт' },
-{ date: '13.06', day: 'Сб' },
-{ date: '14.06', day: 'Вс' },
-{ date: '15.06', day: 'Пн' },
-{ date: '16.06', day: 'Вт' },
-{ date: '17.06', day: 'Ср' },
-{ date: '18.06', day: 'Чт' },
-{ date: '19.06', day: 'Пт' },
-{ date: '20.06', day: 'Сб' },
-{ date: '21.06', day: 'Вс' },
-{ date: '22.06', day: 'Пн' },
-{ date: '23.06', day: 'Вт' },
-{ date: '24.06', day: 'Ср' },
-{ date: '25.06', day: 'Чт' },
-{ date: '26.06', day: 'Пт' },
-{ date: '27.06', day: 'Сб' },
-{ date: '28.06', day: 'Вс' },
-{ date: '29.06', day: 'Пн' },
-{ date: '30.06', day: 'Вт' },
-{ date: '01.07', day: 'Ср' },
-{ date: '02.07', day: 'Чт' },
-{ date: '03.07', day: 'Пт' },
-{ date: '04.07', day: 'Сб' },
-{ date: '05.07', day: 'Вс' },
-{ date: '06.07', day: 'Пн' },
-{ date: '07.07', day: 'Вт' }
-];
+        const classmates = ["Авра", "Астидамия", "Дорида", "Крессида", "Нереида", "Ойзис", "Парфенопа", "Прокрида", "Стримо", "Талло", "Хареа", "Эгина", "Энона"];
+        const startDate = new Date(2026, 5, 3);
+        const datesArray = [];
+        const daysRu = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
         
-        const totalPersons = classmates.length;
-        const totalDates = datesArray.length;
+        for (let i = 0; i < 35; i++) {
+            let d = new Date(startDate);
+            d.setDate(d.getDate() + i);
+            datesArray.push({
+                date: d.getDate().toString().padStart(2, '0') + '.' + (d.getMonth() + 1).toString().padStart(2, '0'),
+                day: daysRu[d.getDay()],
+                isWeekend: d.getDay() === 0 || d.getDay() === 6
+            });
+        }
+
+        function renderTable() {
+            let html = `<thead><tr><th class="name-col" rowspan="2">Имя</th><th class="summary-col" rowspan="2">Итого</th>`;
+            datesArray.forEach(d => html += `<th>${d.date}</th>`);
+            html += `</tr><tr>`;
+            datesArray.forEach(d => html += `<th class="day-header ${d.isWeekend ? 'weekend' : ''}">${d.day}</th>`);
+            html += `</tr></thead><tbody>`;
+            classmates.forEach((name, pIdx) => {
+                html += `<tr><td class="name-col">${name}</td><td class="summary-col" id="sum_${pIdx}">0</td>`;
+                datesArray.forEach((_, dIdx) => html += `<td onclick="toggleCheck(${pIdx}, ${dIdx})"><input type="checkbox" id="cb_${pIdx}_${dIdx}" style="pointer-events:none"></td>`);
+                html += `</tr>`;
+            });
+            document.getElementById('mainTable').innerHTML = html + `</tbody>`;
+        }
 
         function toggleCheck(pIdx, dIdx) {
             const cb = document.getElementById(`cb_${pIdx}_${dIdx}`);
-            if (!cb) return;
             cb.checked = !cb.checked;
-            localStorage.setItem(`hug_matrix_${pIdx}_${dIdx}`, cb.checked);
+            localStorage.setItem(`h_${pIdx}_${dIdx}`, cb.checked);
             calculateStats();
         }
 
         function calculateStats() {
             let grandTotal = 0;
-            for (let p = 0; p < totalPersons; p++) {
-                let personTotal = 0;
-                for (let d = 0; d < totalDates; d++) {
-                    const checked = localStorage.getItem(`hug_matrix_${p}_${d}`) === 'true';
-                    const cb = document.getElementById(`cb_${p}_${d}`);
-                    if (cb) cb.checked = checked;
-                    if (checked) personTotal++;
-                }
-                document.getElementById(`sum_${p}`).textContent = personTotal;
-                grandTotal += personTotal;
-            }
+            classmates.forEach((_, pIdx) => {
+                let pTotal = 0;
+                datesArray.forEach((_, dIdx) => {
+                    const checked = localStorage.getItem(`h_${pIdx}_${dIdx}`) === 'true';
+                    document.getElementById(`cb_${pIdx}_${dIdx}`).checked = checked;
+                    if (checked) pTotal++;
+                });
+                document.getElementById(`sum_${pIdx}`).textContent = pTotal;
+                grandTotal += pTotal;
+            });
             document.getElementById('totalHugs').textContent = grandTotal;
         }
 
         function prepareAndPrint() {
-            const printSection = document.getElementById('printSection');
+            let html = `<div class="print-header"><h2>Итоговый отчет: Подсчет обнимашек в группе 161</h2></div>`;
             let grandTotal = 0;
-            let html = `
-                <div class="print-header">
-                    <h2>Итоговый отчет: Трекер объятий</h2>
-                    <p>Период проведения: 03 июня 2026 г. — 07 июля 2026 г.</p>
-                </div>
-                <div class="print-list">
-            `;
-
-            for (let p = 0; p < totalPersons; p++) {
-                let personTotal = 0;
-                let datesHugged = [];
-                
-                for (let d = 0; d < totalDates; d++) {
-                    if (localStorage.getItem(`hug_matrix_${p}_${d}`) === 'true') {
-                        datesHugged.push(`<span>${datesArray[d].date} (${datesArray[d].day})</span>`);
-                        personTotal++;
+            classmates.forEach((name, pIdx) => {
+                let pTotal = 0, datesHugged = [];
+                datesArray.forEach((d, dIdx) => {
+                    if (localStorage.getItem(`h_${pIdx}_${dIdx}`) === 'true') {
+                        datesHugged.push(`<span>${d.date} (${d.day})</span>`);
+                        pTotal++;
                     }
-                }
-                
-                grandTotal += personTotal;
-                
-                html += `
-                    <div class="print-item">
-                        <div class="print-item-header">
-                            <div class="print-name">${classmates[p]}</div>
-                            <div class="print-total">Объятий: ${personTotal}</div>
-                        </div>
-                        <div class="print-dates">
-                            ${personTotal > 0 ? 'Даты встреч: ' + datesHugged.join(' ') : '<i>Отметок нет</i>'}
-                        </div>
-                    </div>
-                `;
-            }
-
-            html += `
-                </div>
-                <div class="print-summary">
-                    Всего объятий со всеми: ${grandTotal}
-                </div>
-            `;
-            
-            printSection.innerHTML = html;
+                });
+                grandTotal += pTotal;
+                html += `<div class="print-item"><div class="print-item-header"><div>${name}</div><div>Объятий: ${pTotal}</div></div><div class="print-dates">${datesHugged.join(' ')}</div></div>`;
+            });
+            document.getElementById('printSection').innerHTML = html + `<div class="print-summary">Всего: ${grandTotal}</div>`;
             window.print();
         }
 
-        window.onload = calculateStats;
+        renderTable();
+        calculateStats();
     </script>
 </body>
 </html>
